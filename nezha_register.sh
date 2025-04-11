@@ -1,17 +1,38 @@
 #!/bin/bash
 
-# Exit if NEZHA_TOKEN is not set
-if [ -z "${NEZHA_TOKEN}" ]; then
-    echo "NEZHA_TOKEN is not set. Exiting."
-    exit 0
+# Parse command line arguments
+for arg in "$@"; do
+    case $arg in
+        hostname=*)
+        NODE_NAME="${arg#*=}"
+        ;;
+        token=*)
+        NEZHA_TOKEN="${arg#*=}"
+        ;;
+        probe_address=*)
+        NEZHA_PROBE_ADDRESS="${arg#*=}"
+        ;;
+        dashboard_url=*)
+        NEZHA_DASHBOARD_URL="${arg#*=}"
+        ;;
+    esac
+done
+
+# Check if all required parameters are provided
+if [ -z "${NEZHA_TOKEN}" ] || [ -z "${NEZHA_PROBE_ADDRESS}" ] || [ -z "${NEZHA_DASHBOARD_URL}" ]; then
+    echo "错误：缺少必要参数"
+    echo "使用方法："
+    echo "./nezha_register.sh hostname=主机名 token=面板TOKEN probe_address=探针地址 dashboard_url=面板地址"
+    echo "示例："
+    echo "./nezha_register.sh hostname=server1 token=your_token probe_address=probe.example.com dashboard_url=https://nezha.example.com"
+    exit 1
 fi
 
-# Set default values if variables are not set
-NEZHA_PROBE_ADDRESS="${NEZHA_PROBE_ADDRESS:-probe.example.com}"
-NEZHA_PROBE_PORT="${NEZHA_PROBE_PORT:-5555}"
-NEZHA_DASHBOARD_URL="${NEZHA_DASHBOARD_URL:-https://nezha.example.com}"
-
+# Set default hostname if not provided
 NODE_NAME=${NODE_NAME:-$(hostname)}
+
+# Set default probe port
+NEZHA_PROBE_PORT="443"
 
 # Send POST request and capture response and HTTP status code
 response=$(curl -s -o response_body.json -w "%{http_code}" -X POST "${NEZHA_DASHBOARD_URL}/api/v1/server/register?simple=true" \

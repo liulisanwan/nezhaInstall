@@ -1,0 +1,37 @@
+name: Nezha Registration
+
+on:
+  workflow_dispatch:
+    inputs:
+      hostname:
+        description: '节点主机名'
+        required: true
+        type: string
+      token:
+        description: '面板 Token'
+        required: true
+        type: string
+      probe_address:
+        description: '探针地址'
+        required: true
+        type: string
+      dashboard_url:
+        description: '面板地址'
+        required: true
+        type: string
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Run Nezha Registration
+      run: |
+        chmod +x ./nezha_register.sh
+        ./nezha_register.sh \
+          hostname=${{ github.event.inputs.hostname }} \
+          token=${{ github.event.inputs.token }} \
+          probe_address=${{ github.event.inputs.probe_address }} \
+          dashboard_url=${{ github.event.inputs.dashboard_url }} 
