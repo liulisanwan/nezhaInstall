@@ -38,7 +38,7 @@ NEZHA_PROBE_PORT="443"
 response=$(curl -s -o response_body.json -w "%{http_code}" -X POST "${NEZHA_DASHBOARD_URL}/api/v1/server/register?simple=true" \
   -H "Content-Type: application/json" \
   -H "Authorization: ${NEZHA_TOKEN}" \
-  -d "{\"Name\": \"${NODE_NAME}\"}")
+  -d "{\"Name\": \"${NODE_NAME}\", \"HideForGuest\": \"off\"}")
 
 # Extract HTTP status code and Nezha secret
 HTTP_CODE="$response"
