@@ -11,15 +11,24 @@
 - `dashboard_url`: 面板访问地址（必需）
 
 ```bash
-# 使用示例
-./nezha_register.sh \
+# 从 GitHub 下载并运行（推荐）
+curl -L https://raw.githubusercontent.com/liulisanwan/nezhaInstall/main/nezha_register.sh | bash -s -- \
   hostname=your-hostname \
   token=your-token \
   probe_address=probe.example.com \
   dashboard_url=https://nezha.example.com
-
+```
+```bash
+# 或者使用 wget
+wget -O - https://raw.githubusercontent.com/liulisanwan/nezhaInstall/main/nezha_register.sh | bash -s -- \
+  hostname=your-hostname \
+  token=your-token \
+  probe_address=probe.example.com \
+  dashboard_url=https://nezha.example.com
+```
+```bash
 # 使用系统默认主机名
-./nezha_register.sh \
+curl -L https://raw.githubusercontent.com/liulisanwan/nezhaInstall/main/nezha_register.sh | bash -s -- \
   token=your-token \
   probe_address=probe.example.com \
   dashboard_url=https://nezha.example.com
