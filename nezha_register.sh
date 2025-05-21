@@ -1,5 +1,22 @@
 #!/bin/bash
 
+# 检查unzip是否已安装
+if ! command -v unzip &> /dev/null; then
+    echo "unzip 未安装，正在安装..."
+    apt -y install unzip
+    
+    # 再次检查unzip是否成功安装
+    if command -v unzip &> /dev/null; then
+        echo "unzip 已成功安装"
+    else
+        echo "unzip 安装失败，请手动检查"
+        exit 1
+    fi
+else
+    echo "unzip 已安装，版本信息:"
+    unzip -v | head -n 1
+fi
+
 # Parse command line arguments
 for arg in "$@"; do
     case $arg in
